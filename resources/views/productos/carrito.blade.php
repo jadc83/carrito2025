@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="container mx-auto p-4">
-        <h1 class="text-xl font-bold mb-4">🛒 Carrito de Compras</h1>
+        <h1 class="text-xl font-bold mb-4">Carrito de Compras</h1>
 
         @if (session('success'))
             <p class="text-green-600">{{ session('success') }}</p>

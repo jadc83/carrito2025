@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddRequest;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
@@ -83,6 +84,7 @@ class ProductoController extends Controller
 
      public function add($id)
     {
+
         $producto = Producto::find($id);
         $carrito = session()->get('carrito', []);
 
@@ -130,7 +132,7 @@ class ProductoController extends Controller
      * Crea una factura, enlaza los productos del carrito, los asigna a la factura y vacia el carrito
      */
 
-    public function pagar()
+    public function pagar(AddRequest $request)
     {
         $ticket = new Ticket();
         $ticket->tarjeta = '3589239';
