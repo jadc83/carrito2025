@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
 use App\Models\Producto;
+use App\Models\Ticket;
 
 class ProductoController extends Controller
 {
@@ -32,23 +33,11 @@ class ProductoController extends Controller
      */
     public function store(StoreProductoRequest $request)
     {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:productos,nombre',
-            'precio' => 'required|numeric|between:0,999999.99',
-        ], [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
-            'nombre.unique' => 'El producto ya existe en la base de datos',
-            'precio.required' => 'El precio es obligatorio.',
-            'precio.numeric' => 'El precio debe ser un número válido.',
-            'precio.between' => 'El precio debe estar entre 0 y 999999.99.',
-        ]);
-
         $producto = new Producto();
-        $producto->fill($validated);
+        $producto->fill($request->validated());
         $producto->save();
         session()->flash('exito', 'Los cambios se guardaron correctamente.');
-        return redirect()->route('productos.index', $producto);
+        return redirect()->route('productos.index');
     }
 
     /**
@@ -72,21 +61,11 @@ class ProductoController extends Controller
      */
     public function update(UpdateProductoRequest $request, Producto $producto)
     {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'precio' => 'required|numeric|between:0,999999.99',
-        ], [
-            'nombre.required' => 'El nombre es obligatorio.',
-            'nombre.max' => 'El nombre no puede tener más de 255 caracteres.',
-            'precio.required' => 'El precio es obligatorio.',
-            'precio.numeric' => 'El precio debe ser un número válido.',
-            'precio.between' => 'El precio debe estar entre 0 y 999999.99.',
-        ]);
 
-        $producto->update($validated);
+        $producto->update($request->validated());
         session()->flash('exito', 'Los cambios se guardaron correctamente.');
 
-        return redirect()->route('productos.index', $producto);
+        return redirect()->route('productos.index');
     }
 
     /**
@@ -98,18 +77,13 @@ class ProductoController extends Controller
         return redirect()->route('productos.index');
     }
 
-    public function comprar(Producto $producto)
-    {
-
-    }
-
         /**
-     * Añade un producto al carrito desde la vista del carrito
+     * Añade un producto al carrito
      */
 
      public function add($id)
     {
-        $producto = Producto::findOrFail($id);
+        $producto = Producto::find($id);
         $carrito = session()->get('carrito', []);
 
         if (isset($carrito[$id])) {
@@ -131,7 +105,7 @@ class ProductoController extends Controller
     }
 
          /**
-     * Resta un producto al carrito desde la vista del carrito
+     * Resta un producto
      */
 
      public function resta($id)
@@ -151,12 +125,25 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index');
     }
+
          /**
      * Crea una factura, enlaza los productos del carrito, los asigna a la factura y vacia el carrito
      */
 
     public function pagar()
     {
+        $ticket = new Ticket();
+        $ticket->tarjeta = '3589239';
+        $ticket->save();
+
+        foreach (session('carrito') as $objeto)
+        {
+            $ticket->productos()->attach($objeto['id'], ['cantidad' => $objeto['cantidad']]);
+        }
+        $ticket->save();
+        $this->vaciar();
+
+        return view('productos.factura', ['ticket' => $ticket]);
 
     }
          /**
@@ -166,6 +153,6 @@ class ProductoController extends Controller
     public function vaciar()
     {
         session()->forget('carrito');
-        return redirect()->route('micarrito');
+        return redirect()->route('carrito');
     }
 }

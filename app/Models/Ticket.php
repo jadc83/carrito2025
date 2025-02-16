@@ -9,7 +9,7 @@ class Ticket extends Model
 {
     public function productos()
     {
-        return $this->belongsToMany(Producto::class, 'lineas', 'ticket_id', 'producto_id');
+        return $this->belongsToMany(Producto::class, 'lineas', 'ticket_id', 'producto_id')->withPivot('cantidad');
     }
     /** @use HasFactory<\Database\Factories\TicketFactory> */
     use HasFactory;

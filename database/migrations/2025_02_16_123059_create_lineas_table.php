@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('ticket_id')->constrained();
             $table->foreignId('producto_id')->constrained();
+            $table->integer('cantidad')->default(1);
             $table->timestamps();
         });
     }
