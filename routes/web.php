@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProductoController;
 use App\Livewire\Buscador;
-use App\Models\Producto;
+use App\Livewire\Contador;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -29,5 +29,6 @@ Route::post('/productos/{producto}/resta', [ProductoController::class, 'resta'])
 Route::post('/productos/vaciar', [ProductoController::class, 'vaciar'])->name('productos.vaciar');
 Route::post('/productos/pagar', [ProductoController::class, 'pagar'])->name('productos.pagar');
 Route::get('/buscador', Buscador::class);
+Route::get('/contador', Contador::class);
 
 require __DIR__.'/auth.php';

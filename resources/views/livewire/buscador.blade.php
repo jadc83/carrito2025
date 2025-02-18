@@ -1,6 +1,7 @@
 <div>
-    <input type="text" class="ml-[20em] mt-4" placeholder="Buscar..." wire:model="criterio" wire:keydown='buscar'>
-
+    <div class="flex h-16">
+        <input type="text" class="ml-[20em] mt-4" placeholder="Buscar..." wire:model="criterio" wire:keydown='buscar'>
+    </div>
     <div>
         @if ($productos->count() > 0)
             <table class="w-8/12 mx-auto mt-4 text-sm text-gray-500 dark:text-gray-400">

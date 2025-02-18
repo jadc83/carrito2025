@@ -24,4 +24,5 @@ class Buscador extends Component
     {
         $this->productos = Producto::where('nombre', 'ILIKE', "%$this->criterio%")->get();
     }
+
 }
