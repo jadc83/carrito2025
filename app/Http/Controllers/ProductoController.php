@@ -15,10 +15,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all();
-        $carrito = session()->get('carrito', []);
 
-        return view('productos.index', ['productos' => $productos, 'carrito' => $carrito]);
+        return view('productos.index');
     }
 
     /**
