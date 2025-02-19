@@ -1,4 +1,19 @@
-<div>
+<div class="flex-col">
+
+
+    <div class="flex">
+        <div class="bg-black text-white w-1/12 text-center ml-auto mr-4 mt-4">
+            @php
+                $total = 0;
+                foreach (session('carrito', []) as $item) {
+                    $total += $item['cantidad'];
+                }
+            @endphp
+            <p>Tu carrito: {{ $total }}</p>
+        </div>
+    </div>
+
+
     <div class="flex h-16">
         <input type="text" class="ml-[20em] mt-4" placeholder="Buscar..." wire:model="criterio" wire:keydown='buscar'>
     </div>
@@ -32,8 +47,10 @@
 
                 <tbody>
                     @foreach ($productos as $producto)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row"
+                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <a href="{{ route('productos.show', $producto) }}">{{ $producto->nombre }}</a>
                             </th>
                             <td class="px-6 py-4 text-center">
@@ -41,9 +58,11 @@
                             </td>
                             <td>
                                 <div class="flex justify-center">
-                                    <form action="{{ route('productos.add', $producto) }}" method="POST" class="inline-block mr-2">
+                                    <form action="{{ route('productos.add', $producto) }}" method="POST"
+                                        class="inline-block mr-2">
                                         @csrf
-                                        <button type="submit" class="text-white bg-green-600 hover:bg-green-700 p-2 py-2 rounded-md">Comprar</button>
+                                        <button type="submit"
+                                            class="text-white bg-green-600 hover:bg-green-700 p-2 py-2 rounded-md">Comprar</button>
                                     </form>
                                 </div>
                             </td>
